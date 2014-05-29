@@ -1,4 +1,4 @@
-I = imread('Mire1.png');
+I = imread('Mire.png');
 if length(I(1,1,:)) > 1
     temp_I = I(:,:,1);
     I=temp_I;
@@ -9,7 +9,7 @@ disp('add light');
 imshow(I);
 disp('show src img');
 % blur_I = blur(I, 0.1, 0.1, 0.2, 0.13, 0.13, 0.14, 0.3, 0.3);
-H = fspecial('gaussian', length(I(:, 1)), 1.2);
+H = fspecial('gaussian', length(I(:, 1)), 2);
 blur_I = imfilter(I, H, 'replicate');
 disp('img blurred');
 figure;
@@ -22,8 +22,8 @@ imshow(unblur_I)
 dif = difference(I, unblur_I);
 figure;
 imshow(dif);
-% 
-% unblur_I_lin = unblur_lin(blur_I, lin);
-% disp('img unblurred lin');
-% figure;
-% imshow(unblur_I_lin)
+
+lin_unblur_I = unblur_lin(blur_I, lin);
+disp('img unblurred lin');
+figure;
+imshow(lin_unblur_I)
