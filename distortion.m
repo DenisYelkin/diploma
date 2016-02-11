@@ -1,0 +1,11 @@
+clear;
+x = -8 : 0.1 : 8;
+y = -8 : 0.1 : 8;
+for i = 1 : length(x);
+    for j = 1 : length(x);
+        z(i, j) = exp(-((x(i)^2 + y(j)^2).^0.5 - 5).^2);
+%         * exp(1i * x(i) + 1i * y(i));
+%         z(i, j) = double((real(z(i, j))^2 + imag(z(i, j))^2)^0.5);
+    end;
+end;
+mesh(x, y, z);
