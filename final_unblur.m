@@ -1,15 +1,23 @@
 function [result] = final_unblur(blur_I, a)
     result = blur_I;
     temp = double(result);
-    for i = 3 : length(blur_I(:,1)) - 2
-        for j = 3 : length(blur_I(1,:)) - 2
+    for i = 4 : length(blur_I(:,1)) - 3
+        for j = 4 : length(blur_I(1,:)) - 3
             b1 = temp(i, j);
             b2 = (temp(i + 1, j) + temp(i - 1, j) + temp(i, j + 1) + temp(i, j - 1)) / 4;
             b3 = (temp(i + 1, j - 1) + temp(i - 1, j + 1) + temp(i + 1, j + 1) + temp(i - 1, j - 1)) / 4;
             b4 = (temp(i + 2, j) + temp(i - 2, j) + temp(i, j - 2) + temp(i, j + 2)) / 4;
             b5 = (temp(i + 1, j + 2) + temp(i + 1, j - 2) + temp(i - 1, j + 2) + temp(i - 1, j - 2) + temp(i + 2, j - 1) + temp(i + 2, j + 1) + temp(i - 2, j + 1) + temp(i - 2, j - 1)) / 8;
             b6 = (temp(i + 2, j - 2) + temp(i - 2, j + 2) + temp(i + 2, j + 2) + temp(i - 2, j - 2)) / 4;
-            result(i, j) = round(b1 * a(1) + b2 * a(2) + b2^2 * a(3) + b2^3 * a(4) + b3 * a(5) + b3^2 * a(6) + b3^3 * a(7) + b4 * a(8) + b4^2 * a(9) + b4^3 * a(10) + b5 * a(11) + b5^2 * a(12) + b5^3 * a(13) + b6 * a(14) + b6^2 * a(15) + b6^3 * a(16));
+            b7 = (temp(i + 3, j + 3) + temp(i + 3, j - 3) + temp(i - 3, j + 3) + temp(i - 3, j - 3)) / 4;
+            func = [1 b2 b3 b4 b5 b6 b7 ...
+                b2*b2 b2*b3 b2*b4 b2*b5 b2*b6 b2*b7 ...
+                b3*b3 b3*b4 b3*b5 b3*b6 b3*b7 ...
+                b4*b4 b4*b5 b4*b6 b4*b7 ...
+                b5*b5 b5*b6 b5*b7 ...
+                b6*b6 b6*b7 ...
+                b7*b7];
+            result(i, j) = sum(func .* a');
         end
     end
 end
